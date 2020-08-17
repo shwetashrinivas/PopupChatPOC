@@ -1,0 +1,117 @@
+<!-- Button to open chat -->
+<div>
+  <button class="open-button" (click)="openForm()">
+    <fa-icon [icon]="faRobot" size="2x" [styles]="{'stroke': 'blue', 'color': '#70c6ff'}"></fa-icon>
+  </button>
+</div>
+
+<div class="chat-popup" id="myForm" style="border-color: #4e4e4e;">
+  <div app-theme>
+
+    <!-- Navigation Bar Menu -->
+    <div class="nav-header">
+    <mat-toolbar>
+      <span class="fill-remaining-space">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" [overlapTrigger]="false">
+          <button mat-menu-item>
+            <mat-icon>chat</mat-icon>
+            <span>Chat Transcript</span>
+          </button>
+        </mat-menu>
+      </span>
+      <span class="fill-remaining-space">Watson Assistant</span>
+      <span class="fill-remaining-space">
+        <!-- Preferences Menu -->
+        <button mat-icon-button [matMenuTriggerFor]="settings">
+          <mat-icon>settings</mat-icon>
+        </button>
+        <!-- 1 -->
+        <mat-menu #settings="matMenu" [overlapTrigger]="false">
+          <button mat-menu-item>
+            <app-menu [options]="options$ | async" (themeChange)="themeChangeHandler($event)">
+            </app-menu>
+            <span>Theme</span> 
+          </button>
+          <!-- 2 -->
+
+          <button mat-menu-item>
+            <div class="main container">
+              <mat-icon>highlight</mat-icon>
+              <span>Toggle:  </span>
+                <span>Light</span>
+                <label class="switch">
+                  <input type="checkbox" (click)="toggle()">
+                  <span class="slider round"></span>
+                </label>
+                <span>Dark</span>
+            </div>
+            </button>
+          <!-- 3 -->
+          <button mat-menu-item [matMenuTriggerFor]="fontsize">
+            <mat-icon>text_format</mat-icon>
+            <span>Font Size</span>
+          </button>
+        </mat-menu>
+        <mat-menu #fontsize="matMenu">
+          <button mat-menu-item>
+            <mat-icon>format_size</mat-icon>
+            <span>Small</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>format_size</mat-icon>
+            <span>Medium</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>format_size</mat-icon>
+            <span>Large</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>format_size</mat-icon>
+            <span>X-Large</span>
+          </button>
+        </mat-menu>
+      </span>
+      <span class="fill-remaining-space">
+        <span class="chat-window-minimise" (click)="closeForm()">
+          <fa-icon [icon]="faMinus" size="1x"></fa-icon>
+        </span>
+      </span>
+    </mat-toolbar>
+    </div>
+    <!-- Chat Window -->
+    <div class="chat-box-body">
+      <div class="chat-box-overlay">
+        <p>
+          Please type in your message or select a response!
+        </p>
+      </div>
+      <div class="chat-logs">
+        <div class="talk-bubble tri-right btm-right">
+          <div class="talktext">
+            <p> Hi! How can I help you today?</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row chat-input">
+      <form>
+        <div class="col-lg-10 chat-input-textbox">
+          <input placeholder="Type something..." name="msg" id="chat-input" required />
+        </div>
+        <div class="col-lg-2 chat-input-button">
+          <button type="submit" class="chat-submit" id="chat-submit">
+            <fa-icon [icon]="faArrowAltCircleRight" [styles]="{'color': '#b5b3bd'}" size="2x"></fa-icon>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  </div>
+
+            
+          
+

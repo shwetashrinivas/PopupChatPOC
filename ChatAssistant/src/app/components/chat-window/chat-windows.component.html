@@ -1,0 +1,825 @@
+ <!-- Button to open chat -->
+ <div>
+    <button class="open-button" (click) ="openForm()">
+    <fa-icon [icon]="faRobot" size="2x" [styles]="{'stroke': 'blue', 'color': '#70c6ff'}"></fa-icon>
+    </button>
+  </div>
+  <div class="container">
+      
+      <div class="chat-popup" id="myForm" style="border-color: #4e4e4e;">
+      
+        <div class="chat-box-header">
+            <div class="chat-box-header-content">
+
+              <span class="chat-box-header-text">Watson Assistant</span>
+
+
+              <!-- Preferences Menu -->
+
+              <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>settings</mat-icon>
+              </button>
+
+              <mat-menu #menu="matMenu">
+                <div app-theme>
+                  <div class="main container">
+                        Toggle        
+                      <div class="innerdiv">
+            
+                      <span>Light</span>
+                      <label class="switch">
+                        <input type="checkbox" (click)="toggle()" >
+                        <span class="slider round"></span>
+                      </label>
+                      <span>Dark</span>
+                    </div>
+                  </div>
+                </div>
+
+
+                
+              <mat-toolbar color="primary">
+                <mat-toolbar-row>
+                  <span>Theme</span>
+                  <span class="spacer"></span>
+                  <app-menu 
+                    [options]="options$ | async"
+                    (themeChange)="themeChangeHandler($event)">
+                  </app-menu>
+                </mat-toolbar-row>
+              </mat-toolbar>
+
+
+                <button mat-menu-item [matMenuTriggerFor]="fontsize">
+                  <mat-icon>text_format</mat-icon>
+                  <span>Font Size</span>
+                </button>
+              </mat-menu>
+
+              <mat-menu #fontsize="matMenu">
+                <button mat-menu-item>
+                  <mat-icon>format_size</mat-icon>
+                  <span>Small</span>
+                </button> 
+                <button mat-menu-item>
+                  <mat-icon>format_size</mat-icon>
+                  <span>Medium</span>
+                </button> 
+                <button mat-menu-item>
+                  <mat-icon>format_size</mat-icon>
+                  <span>Large</span>
+                </button> 
+                <button mat-menu-item>
+                  <mat-icon>format_size</mat-icon>
+                  <span>X-Large</span>
+                </button>
+
+              </mat-menu>
+
+
+
+              <span class="chat-box-toggle" (click) ="closeForm()">
+                <fa-icon [icon]="faMinus" [styles]="{'color': '#b5b3bd'}" size="1x"></fa-icon>
+              </span>
+          </div>
+        </div>
+
+        <div class="chat-box-body">
+          <div class="chat-box-overlay">  
+            <p>
+              Please type in your message or select a response!
+            </p>
+          </div>
+          <div class="chat-logs">
+            <div class="talk-bubble tri-right btm-right">
+              <div class="talktext">
+                <p> Hi! How can I help you today?</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row chat-input">
+          <form>
+          <div class="col-lg-10 chat-input-textbox">
+            <input placeholder="Type something..." name="msg" id="chat-input" required/>
+          </div>
+          <div class="col-lg-2 chat-input-button">
+            <button type="submit" class="chat-submit" id="chat-submit">
+              <fa-icon [icon] ="faArrowAltCircleRight" [styles]="{'color': '#b5b3bd'}" size="2x"></fa-icon>
+            </button>
+          </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+
+
+
+    
+/* Add styles to the form container */
+
+
+.chat-box-toggle {
+  float:right;
+  margin-right:15px;
+  cursor:pointer;
+ }
+
+.chat-box-header {
+  font-family:'Roboto-Black';
+  background: white;
+  min-height: 48px;
+ padding: 12px;
+}
+.chat-box-body {
+  font-family:'Roboto';
+  position: relative;  
+  height:370px;  
+  height:auto;
+  /* border:1px solid #ccc;   */
+  overflow: hidden;
+  background-color:#ebe9e973;
+  padding:10px;
+}
+
+#chat-overlay {
+  background: rgba(255,255,255,0.1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: none;
+}
+
+.response-button {
+ /* display:inline-block;
+padding :0.7em 1.7em;
+margin:0 0.3em 0.3em 0;
+border-radius:0.2em;
+box-sizing: border-box;
+text-decoration:none;
+font-family:'Roboto',sans-serif;
+font-weight:400;
+color:#FFFFFF;
+background-color:#3369ff;
+box-shadow:inset 0 -0.6em 1em -0.35em rgba(0,0,0,0.17),inset 0 0.6em 2em -0.3em rgba(255,255,255,0.15),inset 0 0 0em 0.05em rgba(255,255,255,0.12);
+text-align:center;
+position:relative; */
+
+margin-left: 100px;
+display: inline-block;
+position: relative;
+width: 200px;
+height: auto;
+padding-top: 20px;
+border-radius:0.2em;
+box-sizing: border-box;
+text-decoration:none;
+background-color: whitesmoke;
+}
+
+.responsive-button:active{
+  box-shadow:inset 0 0.6em 2em -0.3em rgba(0,0,0,0.15),inset 0 0 0em 0.05em rgba(255,255,255,0.12);
+  }
+
+#chat-input {
+  width:100%; 
+  position:relative;
+  height:47px;  
+  padding-top:10px;
+  padding-right:50px;
+  padding-bottom:10px;
+  padding-left:10px;
+  border:none;
+  resize:none;
+  outline:none;
+  /* color:#888; */
+  /* border-top:none; */
+  border-bottom-right-radius:5px;
+  border-bottom-left-radius:5px;
+  overflow:hidden;  
+}
+.chat-input > form {
+    margin-bottom: 0;
+}
+
+.chat-submit {  
+  
+  background: transparent;
+  box-shadow:none;
+  border:none;
+  border-radius:50%;
+ 
+}
+.chat-logs {
+  padding:15px; 
+  height:370px;
+  /* overflow-y:scroll; */
+}
+
+/* The popup chat - hidden by default */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  /* background-color: white; */
+}
+
+/* Full-width textarea */
+.form-container textarea {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+  resize: none;
+  min-height: 200px;
+}
+
+/* When the textarea gets focus, do something */
+.form-container textarea:focus {
+  /* background-color: #ddd; */
+  outline: none;
+}
+
+/* Set a style for the submit/send button */
+.form-container .btn {
+  padding: 16px 20px;
+  cursor: pointer;
+  margin-bottom:10px;
+  border: none;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+
+
+/* CSS talk bubble */
+.talk-bubble {
+  font-family:'Roboto-Medium';
+	margin-left: 100px;
+  display: inline-block;
+  position: relative;
+  border-radius: 9px 9px 0px 9px;
+	width: 200px;
+	height: auto;
+  /* background-color:  #d2edff; */
+  background-color: #4e4e50;
+  color: #f1f1f1;
+}
+.border{
+  border: 8px solid #666;
+}
+.round{
+  border-radius: 30px;
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+}
+
+/* talk bubble contents */
+.talktext{
+  padding: 11px;
+  font-size: 13px;
+
+}
+.talktext p{
+  /* remove webkit p margins */
+  -webkit-margin-before: 0em;
+  -webkit-margin-after: 0em;
+}
+
+
+/*Right triangle, placed bottom right side slightly in*/
+.tri-right.border.btm-right:before {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+  left: auto;
+	right: -8px;
+	bottom: -40px;
+	border: 20px solid;
+	border-color: #666 #666 transparent transparent;
+}
+.tri-right.btm-right:after{
+
+
+  left: auto;
+	bottom: -9px;
+	border: 6px solid;
+  /* border-color:  #d2edff #d2edff transparent transparent; */
+  border-color:#4e4e50 #4e4e50 transparent transparent;
+
+  border-left: 6px solid transparent;
+    /* border-top: 8px solid var(--WatsonAssistantChat-SECONDARY-color); */
+    content: "";
+    position: absolute;
+    right: 0px;
+}
+
+.chat-input-textbox{
+  
+  float:left;
+}
+
+.chat-input-button{
+  float: right;
+  padding-top: 7px;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  font-family:'Roboto-Medium';
+  color:#c0bac2;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  font-family:'Roboto-Medium';
+  color:#c0bac2;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  font-family:'Roboto-Medium';
+  color:#c0bac2;
+}
+:-moz-placeholder { /* Firefox 18- */
+  font-family:'Roboto-Medium';
+  color:#c0bac2;
+}
+
+
+
+
+/* Toggle button styles */
+
+.main{
+  padding: 25px;
+  background: var(--background);
+  color: var(--on-background);
+}
+.innerdiv{
+  padding: 25px;
+  margin-top:30px;
+  text-align: left;
+  position: relative;
+  background: var(--primary);
+  color: var(--on-primary);
+}
+button{
+  margin-top: 20px;
+}
+h1{
+  height: auto;
+  text-align: center;
+  margin: 0;
+  background:rgb(229, 36, 30);
+  color: var(--on-primary);
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  top: 11px;
+  margin: 0 5px;
+}
+.switch input { 
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color:  rgba(0, 0, 0, 0.5);
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color:white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #FF0070;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* End toggle button style */
+
+
+
+
+<!-- version 2 -->
+
+<!-- Button to open Pop up chat -->
+<div>
+  <button class="open-button" (click)="openForm()">
+    <fa-icon [icon]="faRobot" size="2x" [styles]="{'stroke': 'blue', 'color': '#70c6ff'}"></fa-icon>
+  </button>
+</div>
+
+<!-- Pop-up Chat Window -->
+
+<div class="chat-popup" id="myForm" style="border-color: #4e4e4e;">
+
+  <mat-toolbar>
+    <span>Watson Assistant</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>settings</mat-icon>
+    </button>
+
+    <span class="chat-box-toggle" (click)="closeForm()">
+      <fa-icon [icon]="faMinus" [styles]="{'color': '#b5b3bd'}" size="1x"></fa-icon>
+    </span>
+
+    <mat-toolbar color="primary">
+      <mat-toolbar-row>
+        <span>Theme</span>
+        <span class="spacer"></span>
+        <app-menu [options]="options$ | async" (themeChange)="themeChangeHandler($event)">
+        </app-menu>
+      </mat-toolbar-row>
+    </mat-toolbar>
+
+    <mat-menu #menu="matMenu">
+      <div app-theme>
+        <div class="main container">
+          Display Mode
+          <div class="innerdiv">
+
+            <span>Light</span>
+            <label class="switch">
+              <input type="checkbox" (click)="toggle()">
+              <span class="slider round"></span>
+            </label>
+            <span>Dark</span>
+          </div>
+        </div>
+      </div>
+
+      <button mat-menu-item [matMenuTriggerFor]="fontsize">
+        <mat-icon>text_format</mat-icon>
+        <span>Font Size</span>
+      </button>
+    </mat-menu>
+
+    <mat-menu #fontsize="matMenu">
+      <button mat-menu-item>
+        <mat-icon>format_size</mat-icon>
+        <span>Small</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>format_size</mat-icon>
+        <span>Medium</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>format_size</mat-icon>
+        <span>Large</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>format_size</mat-icon>
+        <span>X-Large</span>
+      </button>
+
+    </mat-menu>
+  </mat-toolbar>
+
+
+  <div class="chat-box-body">
+    <div class="chat-box-overlay">
+      <p>
+        Please type in your message or select a response!
+      </p>
+    </div>
+    <div class="chat-logs">
+      <div class="talk-bubble tri-right btm-right">
+        <div class="talktext">
+          <p> Hi! How can I help you today?</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row chat-input">
+    <form>
+      <div class="col-lg-10 chat-input-textbox">
+        <input placeholder="Type something..." name="msg" id="chat-input" required />
+      </div>
+      <div class="col-lg-2 chat-input-button">
+        <button type="submit" class="chat-submit" id="chat-submit">
+          <fa-icon [icon]="faArrowAltCircleRight" [styles]="{'color': '#b5b3bd'}" size="2x"></fa-icon>
+        </button>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+
+
+
+* {box-sizing: border-box;}
+
+/* Button used to open the chat form - fixed at the bottom of the page */
+.open-button {
+  position: fixed;
+  border: none;
+  bottom: 70px;
+  right: 50px;
+  background: white;
+  border-radius: 50%;
+  color: white;
+  padding: 20px;
+  cursor: pointer;
+  box-shadow: 1px 2px 2px 5px #d2edff;
+}
+
+
+/* Chat Window Styles */
+
+/* Mat-toolbar */
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.chat-popup {
+ 
+  display: none;
+  position: fixed;
+  bottom: 0;
+  z-index: 9;
+  background: white;
+  right:30px;
+  bottom:50px;  
+  width:350px;
+  max-width: 85vw;
+  max-height:100vh; 
+  box-shadow: 0px 0px 3px 2px #d8d8d8;  
+}
+
+
+
+
+/* Toggle button styles */
+
+.main{
+  padding: 25px;
+  background: var(--background);
+  color: var(--on-background);
+}
+.innerdiv{
+  padding: 25px;
+  margin-top:30px;
+  text-align: left;
+  position: relative;
+  background: var(--primary);
+  color: var(--on-primary);
+}
+button{
+  margin-top: 20px;
+}
+h1{
+  height: auto;
+  text-align: center;
+  margin: 0;
+  background:rgb(229, 36, 30);
+  color: var(--on-primary);
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  top: 11px;
+  margin: 0 5px;
+}
+.switch input { 
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color:  rgba(0, 0, 0, 0.5);
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color:white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #FF0070;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+/* Chat Conversation Area */
+
+
+.chat-box-toggle {
+  float:right;
+  margin-right:15px;
+  cursor:pointer;
+ }
+
+.chat-box-header {
+  font-family:'Roboto-Black';
+  background: white;
+  min-height: 48px;
+ padding: 12px;
+}
+.chat-box-body {
+  font-family:'Roboto';
+  position: relative;  
+  height:370px;  
+  height:auto;
+  overflow: hidden;
+  background-color:#ebe9e973;
+  padding:10px;
+}
+
+#chat-overlay {
+  background: rgba(255,255,255,0.1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: none;
+}
+
+
+#chat-input {
+  width:100%; 
+  position:relative;
+  height:47px;  
+  padding-top:10px;
+  padding-right:50px;
+  padding-bottom:10px;
+  padding-left:10px;
+  border:none;
+  resize:none;
+  outline:none;
+  border-bottom-right-radius:5px;
+  border-bottom-left-radius:5px;
+  overflow:hidden;  
+}
+.chat-input > form {
+    margin-bottom: 0;
+}
+
+.chat-submit {  
+  
+  background: transparent;
+  box-shadow:none;
+  border:none;
+  border-radius:50%;
+ 
+}
+.chat-logs {
+  padding:15px; 
+  height:370px;
+}
+
+
+/* CSS talk bubble */
+.talk-bubble {
+  font-family:'Roboto-Medium';
+	margin-left: 100px;
+  display: inline-block;
+  position: relative;
+  border-radius: 9px 9px 0px 9px;
+	width: 200px;
+	height: auto;
+  /* background-color:  #d2edff; */
+  background-color: #4e4e50;
+  color: #f1f1f1;
+}
+.border{
+  border: 8px solid #666;
+}
+.round{
+  border-radius: 30px;
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+}
+
+/* talk bubble contents */
+.talktext{
+  padding: 11px;
+  font-size: 13px;
+
+}
+.talktext p{
+  /* remove webkit p margins */
+  -webkit-margin-before: 0em;
+  -webkit-margin-after: 0em;
+}
+
+
+/*Right triangle, placed bottom right side slightly in*/
+.tri-right.border.btm-right:before {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+  left: auto;
+	right: -8px;
+	bottom: -40px;
+	border: 20px solid;
+	border-color: #666 #666 transparent transparent;
+}
+.tri-right.btm-right:after{
+
+
+  left: auto;
+	bottom: -9px;
+	border: 6px solid;
+  border-color:#4e4e50 #4e4e50 transparent transparent;
+
+  border-left: 6px solid transparent;
+    content: "";
+    position: absolute;
+    right: 0px;
+}
+
+.chat-input-textbox{
+  
+  float:left;
+}
+
+.chat-input-button{
+  float: right;
+  padding-top: 7px;
+}
+
